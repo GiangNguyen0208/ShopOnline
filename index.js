@@ -1,34 +1,31 @@
 const express = require("express");
+require("dotenv").config();
+
+const database = require("./config/database");
+
+const route = require("./routes/client/index.route");
+
+const products = require("./controller/client/product.controller");
+
+// Connect database
+database.connect();
+
+// Show log products
+// products.index();
+
+
 const app = express();
-const port = 3000;
+const port = process.env.PORT;
+
 
 app.set("views", "./views");
 app.set("view engine", "pug");
 
-app.use(express.static('public'))
+app.use(express.static("public"));
 
-app.get("/", (req, res) => {
-  res.render("index", {
-    title: "Trang chủ",
-    message: "Xin chào các bạn",
-  });
-});
-
-app.get("/products", (req, res) => {
-  res.send("<h1>Trang danh sách sản phẩm</h1>");
-});
-
-app.get("/blog", (req, res) => {
-  res.send("<h1>Trang danh sách bài viết</h1>");
-});
-
-app.get("/contact", (req, res) => {
-  res.render("contact", {
-    title: "Trang liên hệ",
-    message: "Xin chào các bạn",
-  });
-});
+// Routes
+route(app)
 
 app.listen(port, () => {
-  console.log(`App listening on port ${port}`);
+  console.log(`Đã chạy thành công vào cổng ${port}`);
 });
