@@ -9,13 +9,13 @@ block main
                
         .row 
             each item in products 
-                .col-4.mb-3 
-                .product-item 
-                    .inner-image 
-                        img(src=item.thumbnail, alt=item.title)
-                    .inner-content
-                        h3.inner-title #{item.title}
-                        .inner-price-new #{item.priceNew}$
-                        .inner-price-old #{item.price}$
-                        .inner-discount -#{item.discountPercentage}%
+                .card(style='width: 18rem;').product-item
+                    img.card-img-top(src=item.thumbnail, alt=item.title)
+                    .card-body
+                        h5.card-title #{item.title}
+                        p.card-text
+                        | #{item.description}
+                        h5.card-price-new #{item.priceNew}$
+                        h5.card-price-old #{item.price}$
+                        h5.card-discount -#{item.discountPercentage}%
                         a.btn.btn-primary(href='#') Buy Now
