@@ -40,7 +40,7 @@ block main
                     height="auto"
                   )
                 td #{item.title}
-                td #{item.price}$
+                td #{item.priceFormat}
                 td 
                   if(item.status == "active")
                     a(href="#" class="badge badge-success") Hoạt động
@@ -53,3 +53,35 @@ block main
                     button-delete
                     data-id=item.id
                   ) Xóa
+    
+    nav
+    ul(class="pagination")
+      if(pagination.currentPage > 1)
+        li(class="page-item")
+            button(
+                class="page-link"
+                button-pagination=1
+              ) First Page
+        li(class="page-item")
+          button(
+              class="page-link"
+              button-pagination=pagination.currentPage-1
+            ) Previous
+      - for (var i = 1; i <= pagination.pageNum; i++) 
+        li(class=`page-item ${pagination.currentPage == i ? "active" : ""}`)
+          button(
+            class="page-link"
+            button-pagination=i
+          ) #{i}
+      if(pagination.currentPage < pagination.pageNum)
+        li(class="page-item")
+          button(
+              class="page-link"
+              button-pagination=pagination.currentPage+1
+            ) Next
+        li(class="page-item")
+          button(
+              class="page-link"
+              button-pagination=pagination.pageNum
+            ) Last Page
+        

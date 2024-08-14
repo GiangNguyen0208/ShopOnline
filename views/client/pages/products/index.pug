@@ -15,7 +15,20 @@ block main
                         h5.card-title #{item.title}
                         p.card-text
                         | #{item.description}
-                        h5.card-price-new #{item.priceNew}$
-                        h5.card-price-old #{item.price}$
+                        h5.card-price-new #{item.priceNew}
+                        h5.card-price-old #{item.priceFormat}
                         h5.card-discount -#{item.discountPercentage}%
                         a.btn.btn-primary(href='#') Buy Now
+
+    nav
+        ul.pagination
+            li.page-item
+            a.page-link(href='#') Trang trước
+            li.page-item
+            a.page-link(href='#') 1
+            li.page-item
+            a.page-link(href='#') 2
+            li.page-item
+            a.page-link(href='#') 3
+            li.page-item
+            a.page-link(href='#') Kế tiếp
