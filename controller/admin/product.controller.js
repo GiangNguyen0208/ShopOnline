@@ -9,12 +9,10 @@ module.exports.index = async (req, res) => {
   
   // Filter Status
   const filterStatus = filterStatusHelper(req.query);
-
   // Điều kiện lọc là sản phẩm chưa bị xóa
   let find = {
     deleted: false
   };
-
   if(req.query.status) {
     find.status = req.query.status;
   }
@@ -24,6 +22,7 @@ module.exports.index = async (req, res) => {
   const filterKeyword = filterKeywordHelper(req.query, find);
   // END Filter KEYWORK
 
+  // Trả ra các Product
   const products = await Product.find(find);
   
   res.render("admin/pages/products/index", {
