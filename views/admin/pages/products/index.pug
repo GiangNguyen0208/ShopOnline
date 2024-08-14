@@ -6,12 +6,26 @@ block main
   .card.mb-3 
     .card-header Bộ lọc và Tìm kiếm 
     .card-body 
-      each item in filterStatus
-        button(
-          class=`btn btn-sm ml-1 btn-outline-success ${item.class}`
-          button-status= item.status
-        ) #{item.name}
-
+      .row
+        .col-6
+          each item in filterStatus
+            button(
+              class=`btn btn-sm ml-1 btn-outline-success ${item.class}`
+              button-status= item.status
+            ) #{item.name}
+        .col-6 
+          form(id="form-search")
+            input(
+              type="text"
+              placeholder="Nhập từ khóa"
+              name="keyword"
+              class="form-control"
+            )
+            .input-group-append 
+              button(
+                class="btn btn-success"
+                type="submit"
+              ) Tìm kiếm
 
   .card.mb-3 
     .card-header Danh sách
@@ -46,4 +60,8 @@ block main
                     a(href="#" class="badge badge-danger") Dừng hoạt động
                 td 
                   button(class="btn btn-warning btn-sm") Sửa 
-                  button(class="btn btn-danger btn-sm nl-1") Xóa
+                  button(
+                    class="btn btn-danger btn-sm nl-1"
+                    button-delete
+                    data-id=item.id
+                  ) Xóa

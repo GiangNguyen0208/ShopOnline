@@ -2,7 +2,7 @@ const Product = require("../../models/product.model");
 
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
-
+  
   // FILTER STATUS
   let filterStatus = [
     {
@@ -30,6 +30,7 @@ module.exports.index = async (req, res) => {
     filterStatus[index].class = "active";
   }
 
+  // Điều kiện lọc là sản phẩm chưa bị xóa
   let find = {
     deleted: false
   };
@@ -37,12 +38,26 @@ module.exports.index = async (req, res) => {
   if(req.query.status) {
     find.status = req.query.status;
   }
+  // END FILTER STATUS
+
   
+  
+  // Filter KEYWORD
+  let keyword = "";
+    if(req.query.keyword) {
+      keyword = req.query.keyword;
+
+      const regex = new RegExp(keyword, "i");
+      find.title = regex;
+    }
+  // END Filter KEYWORK
+
   const products = await Product.find(find);
   
   res.render("admin/pages/products/index", {
     pageTitle: "Trang quản lý sản phẩm",
     products: products,
-    filterStatus: filterStatus
+    filterStatus: filterStatus,
+    keyword: keyword
 });
 }
