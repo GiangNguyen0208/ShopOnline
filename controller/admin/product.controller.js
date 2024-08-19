@@ -65,7 +65,7 @@ module.exports.index = async (req, res) => {
     filterKeyword: filterKeyword,
     pagination: productPagination
   });
-}
+};
 
 // [PATCH] /admin/products/change-status
 module.exports.changeStatus = async (req, res) => {
@@ -77,4 +77,31 @@ module.exports.changeStatus = async (req, res) => {
 
   res.redirect("back");
 
-}
+};
+
+// [PATCH] /admin/products/change-multi
+module.exports.changeMulti = async (req, res) => {
+  console.log(req.body);
+  const type = req.body.type;
+  const ids = req.body.ids.split(", ");
+
+  let updateStatus;
+  switch (type) {
+    case "active":
+      updateStatus = "active";
+      break;
+    case "inactive":
+      updateStatus = "inactive";
+      break;
+    default:
+      break;
+  }
+
+  const updatedProducts = await Product.updateMany(
+    { _id: { $in: ids } }, // Điều kiện tìm kiếm
+    { status: updateStatus }, // Cập nhật status
+    { null: false }
+  );
+  
+  res.redirect("back");
+};
