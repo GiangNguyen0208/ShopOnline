@@ -7,8 +7,10 @@ mixin form-change-multi(path)
           .d-flex.align-items-start 
             .form-group
               select(name="type" class="form-control")
-                option(value="active") Hoạt động
-                option(value="inactive") Dừng hoạt động
+                option(disable selected) -- Select Action -- 
+                option(value="active") Active
+                option(value="inactive") Inactive
+                option(value="delete-all") Delete All
             .form-group 
               input(
                 type="text"
@@ -19,4 +21,4 @@ mixin form-change-multi(path)
             button(
               type="submit" 
               class="btn btn-primary"
-            ) Áp dụng
+            ) Submit

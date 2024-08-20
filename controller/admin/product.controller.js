@@ -93,15 +93,22 @@ module.exports.changeMulti = async (req, res) => {
     case "inactive":
       updateStatus = "inactive";
       break;
+    case "delete-all":
+      await Product.updateMany({ _id: { $in: ids } }, { 
+        deleted: true,
+        deletedAt: new Date()
+      });
+      break;
     default:
       break;
   }
-
+  
   const updatedProducts = await Product.updateMany(
     { _id: { $in: ids } }, // Điều kiện tìm kiếm
-    { status: updateStatus }, // Cập nhật status
+    { status: updateStatus, }, // Cập nhật status
     { null: false }
   );
+
   
   res.redirect("back");
 };
@@ -111,9 +118,16 @@ module.exports.delete = async (req, res) => {
   console.log(req.params);
   const id = req.params.id;
   // Delete item on view
-  await Product.updateOne({_id: id}, {deleted: true});
+  await Product.updateOne(
+    {_id: id},
+    {
+      deleted: true,
+      deletedAt: new Date()
+    }
+  );
 
   res.redirect("back");
 };
+
 
 
