@@ -105,3 +105,15 @@ module.exports.changeMulti = async (req, res) => {
   
   res.redirect("back");
 };
+
+// [DELETE] /admin/products/:id
+module.exports.delete = async (req, res) => {
+  console.log(req.params);
+  const id = req.params.id;
+  // Delete item on view
+  await Product.updateOne({_id: id}, {deleted: true});
+
+  res.redirect("back");
+};
+
+

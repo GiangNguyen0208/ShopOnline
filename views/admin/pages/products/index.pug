@@ -77,11 +77,15 @@ block main
                       data-id=item.id
                     ) Dừng hoạt động
                 td 
-                  button(class="btn btn-warning btn-sm") Sửa 
+                  button(
+                    class="btn btn-warning btn-sm"
+                  ) Sửa 
                   button(
                     class="btn btn-danger btn-sm nl-1"
-                    button-delete
+                    button-delete-product
                     data-id=item.id
+                    form-delete-product
+                    data-path=`${prefixAdmin}/products`
                   ) Xóa
     
     +pagination(pagination)
@@ -91,6 +95,13 @@ block main
       method="POST"
       id="form-change-status"
       data-path=`${prefixAdmin}/products/change-status`
+    )
+
+    form(
+      action=""
+      method="POST"
+      id="form-delete-product"
+      data-path=`${prefixAdmin}/products/delete`
     )
 
     script(src="/admin/js/product.js") ;
