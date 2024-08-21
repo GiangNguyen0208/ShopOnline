@@ -1,4 +1,4 @@
-mixin form-change-multi(path)
+mixin form-change-multi(path, listActive)
     form(
           action=path
           method="POST"
@@ -8,9 +8,8 @@ mixin form-change-multi(path)
             .form-group
               select(name="type" class="form-control")
                 option(disable selected) -- Select Action -- 
-                option(value="active") Active
-                option(value="inactive") Inactive
-                option(value="delete-all") Delete All
+                each item in listActive
+                  option(value=item) #{item}
             .form-group 
               input(
                 type="text"

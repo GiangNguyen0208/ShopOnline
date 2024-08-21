@@ -5,10 +5,10 @@ include ../../mixins/pagination.pug
 include ../../mixins/form-change-multi.pug
 
 block main
-  h1 Product Management
+  h1 Product warehouse
 
   .card.mb-3 
-    .card-header Bộ lọc và Tìm kiếm 
+    .card-header Filter and Find 
     .card-body 
       .row
         .col-6
@@ -16,11 +16,12 @@ block main
         .col-6 
           +search(keyword)
           
+
   .card.mb-3 
-    .card-header Product List
+    .card-header List Product on Stock
       .card-body 
-        //- +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`, ["Activate", "Inactivate", "Delete All"])
         +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`, listActive)
+        
         table(
           class="table table-hover table-sm"
           checkbox-multi
@@ -32,12 +33,12 @@ block main
                   type="checkbox"
                   name="checkall"
                 )
-              th STT 
-              th Hình ảnh 
-              th Tiêu đề 
-              th Giá
-              th Trạng thái 
-              th Hành động
+              th Numerical 
+              th Image
+              th Title 
+              th Price
+              th Publish
+              th Active
 
           tbody 
             each item,index in products 
@@ -59,49 +60,40 @@ block main
                 td #{item.title}
                 td #{item.priceFormat}
                 td 
-                  if(item.status == "active")
                     a(
-                      href="javascript:;" 
-                      class="badge badge-success"
-                      button-change-status
-                      data-status=item.status
-                      data-id=item.id
-                    ) Hoạt động
-                  else
-                    a(
-                      href="javascript:;" 
-                      class="badge badge-danger"
-                      button-change-status
-                      data-status=item.status
-                      data-id=item.id
-                    ) Dừng hoạt động
+                        href="javascript:;" 
+                        class="badge badge-danger"
+                        button-post-sale
+                        data-deleted=item.deleted
+                        data-id=item.id
+                    ) Post for sale
                 td 
                   button(
                     class="btn btn-warning btn-sm"
-                  ) Sửa 
+                  ) Fix 
                   button(
                     class="btn btn-danger btn-sm nl-1"
                     button-delete-product
                     data-id=item.id
                     form-delete-product
-                    data-path=`${prefixAdmin}/products`
-                  ) Xóa
+                    data-path=`${prefixAdmin}/stocks`
+                  ) Delete
     
     +pagination(pagination)
 
     form(
       action=""
       method="POST"
-      id="form-change-status"
-      data-path=`${prefixAdmin}/products/change-status`
+      id="form-post-sale"
+      data-path=`${prefixAdmin}/stocks/postSale`
     )
 
     form(
       action=""
       method="POST"
       id="form-delete-product"
-      data-path=`${prefixAdmin}/products/delete`
+      data-path=`${prefixAdmin}/stocks/delete`
     )
 
-    script(src="/admin/js/product.js") ;
+    script(src="/admin/js/stock.js") ;
         

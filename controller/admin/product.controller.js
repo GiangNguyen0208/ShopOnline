@@ -7,8 +7,11 @@ const filterKeywordHelper = require("../../helper/filterKeyword");
 const formatVNDHelper = require("../../helper/formatVND");
 const paginationHelper = require("../../helper/pagination");
 
+
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
+  // Define listActive
+  const listActive = ['active', 'inactive', 'delete-all'];
 
   // Format VND
   const numberFormat = formatVNDHelper.numberFormatter();
@@ -63,7 +66,8 @@ module.exports.index = async (req, res) => {
     products: products,
     filterStatus: filterStatus,
     filterKeyword: filterKeyword,
-    pagination: productPagination
+    pagination: productPagination,
+    listActive: listActive
   });
 };
 
@@ -109,7 +113,6 @@ module.exports.changeMulti = async (req, res) => {
     { null: false }
   );
 
-  
   res.redirect("back");
 };
 
