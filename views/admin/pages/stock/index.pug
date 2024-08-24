@@ -20,7 +20,7 @@ block main
   .card.mb-3 
     .card-header List Product on Stock
       .card-body 
-        +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`, listActive)
+        +form-change-multi(path, listActive)
         
         table(
           class="table table-hover table-sm"
@@ -76,7 +76,7 @@ block main
                     button-delete-product
                     data-id=item.id
                     form-delete-product
-                    data-path=`${prefixAdmin}/stocks`
+                    data-path=path
                   ) Delete
     
     +pagination(pagination)
@@ -85,14 +85,14 @@ block main
       action=""
       method="POST"
       id="form-post-sale"
-      data-path=`${prefixAdmin}/stocks/postSale`
+      data-path=path + `/postSale`
     )
 
     form(
       action=""
       method="POST"
       id="form-delete-product"
-      data-path=`${prefixAdmin}/stocks/delete`
+      data-path=path + `/delete`
     )
 
     script(src="/admin/js/stock.js") ;

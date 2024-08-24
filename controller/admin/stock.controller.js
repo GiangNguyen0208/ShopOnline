@@ -1,6 +1,9 @@
 // MODEL
 const Product = require("../../models/product.model");
 
+// CONFIG
+const config = require("../../config/system");
+
 // HELPER
 const filterStatusHelper = require("../../helper/filterStatus");
 const filterKeywordHelper = require("../../helper/filterKeyword");
@@ -9,6 +12,9 @@ const paginationHelper = require("../../helper/pagination");
 
 // [GET] /admin/stocks
 module.exports.index = async (req, res) => {
+    // Define path
+    const path = config.prefixAdmin + "/stocks";
+
     // Define list Active
     const listActive = ['post','delete-all'];
 
@@ -66,7 +72,8 @@ module.exports.index = async (req, res) => {
       filterStatus: filterStatus,
       filterKeyword: filterKeyword,
       pagination: productPagination,
-      listActive: listActive
+      listActive: listActive,
+      path: path
     });
 };
 
@@ -86,31 +93,31 @@ module.exports.postSale = async (req, res) => {
 
 // [PATCH] /admin/stocks/change-multi
 module.exports.changeMulti = async (req, res) => {
-  console.log(req.body);
+  console.log(req.body); // Kiểm tra dữ liệu gửi lên
   const type = req.body.type;
   const ids = req.body.ids.split(", ");
 
   let deleteStatus;
   switch (type) {
-    case "post":
-      deleteStatus = false;
-      break;
-    case "delete-all":
-      await Product.deleteMany({ _id: { $in: ids } });
-      break;
-    default:
-      break;
+      case "post":
+          deleteStatus = false;
+          break;
+      case "delete-all":
+          await Product.deleteMany({ _id: { $in: ids } });
+          break;
+      default:
+          return res.status(400).send("Invalid type provided.");
   }
-  
-  const postProducts = await Product.updateMany(
-    { _id: { $in: ids } }, // Điều kiện tìm kiếm
-    { deleted: deleteStatus }, // Cập nhật đưa lên bán hàng
-    { null: false }
-  );
+
+  if (type === "post") {
+      await Product.updateMany(
+          { _id: { $in: ids } }, // Condition to find documents
+          { deleted: deleteStatus }, // Update field to mark as not deleted
+      );
+  }
 
   res.redirect("back");
 };
-
 // [DELETE] /admin/stocks/:id
 module.exports.delete = async (req, res) => {
   const id = req.params.id;

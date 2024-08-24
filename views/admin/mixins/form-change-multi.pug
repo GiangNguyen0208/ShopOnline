@@ -1,6 +1,6 @@
 mixin form-change-multi(path, listActive)
     form(
-          action=path
+          action=path + `/change-multi?_method=PATCH`
           method="POST"
           form-change-multi
         )

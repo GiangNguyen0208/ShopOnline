@@ -6,8 +6,6 @@ const stockRoutes = require("./stock.route");
 
 module.exports = (app) => {
     const PATH_ADMIN = systemConfig.prefixAdmin;
-    const listActive = ['Activate', 'Deactivate', 'Delete All'];
-
 
     app.use(PATH_ADMIN + "/dashboard", dashboardRoutes);
     app.use(PATH_ADMIN + "/products", productRoutes);

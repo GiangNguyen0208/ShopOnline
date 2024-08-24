@@ -1,6 +1,9 @@
 // MODEL
 const Product = require("../../models/product.model");
 
+// CONFIG
+const config = require("../../config/system");
+
 // HELPER
 const filterStatusHelper = require("../../helper/filterStatus");
 const filterKeywordHelper = require("../../helper/filterKeyword");
@@ -10,6 +13,9 @@ const paginationHelper = require("../../helper/pagination");
 
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
+  // Define path
+  const path = config.prefixAdmin + "/products";
+
   // Define listActive
   const listActive = ['active', 'inactive', 'delete-all'];
 
@@ -67,7 +73,8 @@ module.exports.index = async (req, res) => {
     filterStatus: filterStatus,
     filterKeyword: filterKeyword,
     pagination: productPagination,
-    listActive: listActive
+    listActive: listActive,
+    path: path
   });
 };
 

@@ -9,6 +9,7 @@ if (buttonPostForSale) {
             const isConfirm = confirm("Are you sure to Post for sale this item ?")
 
             if(isConfirm) {
+                button.disabled = true; // Vô hiệu hóa nút để tránh gửi nhiều lần
                 const id = button.getAttribute("data-id");
                 const action = path + `/${id}?_method=PATCH`;
                 formPostSale.action = action;
@@ -30,6 +31,7 @@ if (buttonDeletdProduct) {
             const isConfirm = confirm("Are you sure that You want to delete this item out of database !?");
 
             if(isConfirm) {
+                button.disabled = true; 
                 const id = button.getAttribute("data-id");
                 const action = path + `/${id}?_method=DELETE`;
                 formDeleteProduct.action = action;
