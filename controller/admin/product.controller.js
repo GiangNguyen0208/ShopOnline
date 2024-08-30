@@ -77,11 +77,12 @@ module.exports.index = async (req, res) => {
     filterKeyword: filterKeyword,
     pagination: productPagination,
     listActive: listActive,
-    path: path
+    path: path,
+    messages: req.flash()
   });
 };
 
-// [PATCH] /admin/products/change-status
+// [PATCH] /admin/products/change-status/:status/:id
 module.exports.changeStatus = async (req, res) => {
   console.log(req.params);
   const status = req.params.status;
@@ -89,8 +90,9 @@ module.exports.changeStatus = async (req, res) => {
 
   await Product.updateOne({_id: id}, {status: status});
 
-  res.redirect("back");
+  req.flash("success", "Update item status successfully !!!");
 
+  res.redirect("back");
 };
 
 // [PATCH] /admin/products/change-multi
@@ -103,15 +105,17 @@ module.exports.changeMulti = async (req, res) => {
   switch (type) {
     case "active":
       updateStatus = "active";
+      req.flash("success", `Update status successfully ${ids.length} item !!!`);
       break;
     case "inactive":
       updateStatus = "inactive";
-      break;
+      req.flash("success", `Update status successfully ${ids.length} item !!!`);
     case "delete-all":
       await Product.updateMany({ _id: { $in: ids } }, { 
         deleted: true,
         deletedAt: new Date()
       });
+      req.flash("success", `Deleted successfully ${ids.length} item !!!`);
       break;
     case "change-position":
       // const positions = new Set();
@@ -119,23 +123,13 @@ module.exports.changeMulti = async (req, res) => {
         const [id, position] = item.split("-");
         console.log(`ID: ${id}, Position: ${position}`);  // Debugging line
 
-        if (positions.has(position)) {
-          req.flash('error', `Position ${position} is already taken. Cannot change position.`);
-          return res.redirect("back");
-        }
-        positions.add(position);
-
-        const existingProduct = await Product.findOne({ position: parseInt(position, 10) });
-        if (existingProduct) {
-          req.flash('error', `Position ${position} is already taken by another product. Cannot change position.`);
-          return res.redirect("back");
-        }
 
         await Product.updateOne(
           { _id: id }, 
           { position: parseInt(position, 10) }
         );
       }
+      req.flash("success", `Change position successfully ${ids.length} item !!!`);
       break;
     default:
       break;
@@ -155,6 +149,9 @@ module.exports.changeMulti = async (req, res) => {
 module.exports.delete = async (req, res) => {
   console.log(req.params);
   const id = req.params.id;
+
+  req.flash("success", "Deleted successfully a item !!!");
+
   // Delete item on view
   await Product.updateOne(
     {_id: id},

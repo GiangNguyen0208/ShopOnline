@@ -1,14 +1,15 @@
+const express = require('express');
 const systemConfig = require("../../config/system");
 
-const dashboardRoutes =  require("./dashboard.route");
+const dashboardRoutes = require("./dashboard.route");
 const productRoutes = require("./product.route");
 const stockRoutes = require("./stock.route");
 
-module.exports = (app) => {
-    const PATH_ADMIN = systemConfig.prefixAdmin;
+const router = express.Router();
+const PATH_ADMIN = systemConfig.prefixAdmin;
 
-    app.use(PATH_ADMIN + "/dashboard", dashboardRoutes);
-    app.use(PATH_ADMIN + "/products", productRoutes);
-    app.use(PATH_ADMIN + "/stocks", stockRoutes);
-}
+router.use("/dashboard", dashboardRoutes);
+router.use("/products", productRoutes);
+router.use("/stocks", stockRoutes);
 
+module.exports = router;
