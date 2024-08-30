@@ -9,7 +9,7 @@ mixin form-change-multi(path, listActive)
               select(name="type" class="form-control")
                 option(disable selected) -- Select Action -- 
                 each item in listActive
-                  option(value=item) #{item}
+                  option(value=item)= item
             .form-group 
               input(
                 type="text"

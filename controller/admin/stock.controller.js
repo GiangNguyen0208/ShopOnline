@@ -118,6 +118,7 @@ module.exports.changeMulti = async (req, res) => {
 
   res.redirect("back");
 };
+
 // [DELETE] /admin/stocks/:id
 module.exports.delete = async (req, res) => {
   const id = req.params.id;

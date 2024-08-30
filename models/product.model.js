@@ -13,7 +13,8 @@ const productSchema = new mongoose.Schema(
         status: String,
         deleted: Boolean,
         deletedAt: Date,
-        postAt: Date
+        postAt: Date,
+        position: Number
     }
 );
 

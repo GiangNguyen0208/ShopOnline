@@ -17,7 +17,7 @@ module.exports.index = async (req, res) => {
   const path = config.prefixAdmin + "/products";
 
   // Define listActive
-  const listActive = ['active', 'inactive', 'delete-all'];
+  const listActive = ["active", "inactive", "delete-all", "change-position"];
 
   // Format VND
   const numberFormat = formatVNDHelper.numberFormatter();
@@ -54,7 +54,10 @@ module.exports.index = async (req, res) => {
   // END Pagination
 
   // Return Product
-  const products = await Product.find(find).limit(productPagination.limitItem).skip(productPagination.skip);
+  const products = await Product.find(find)
+    .sort({ position: "desc" })
+    .limit(productPagination.limitItem)
+    .skip(productPagination.skip);
 
   // Format price to VND
    const newProduct = products.map(item => {
@@ -110,15 +113,40 @@ module.exports.changeMulti = async (req, res) => {
         deletedAt: new Date()
       });
       break;
+    case "change-position":
+      // const positions = new Set();
+      for (const item of ids) {
+        const [id, position] = item.split("-");
+        console.log(`ID: ${id}, Position: ${position}`);  // Debugging line
+
+        if (positions.has(position)) {
+          req.flash('error', `Position ${position} is already taken. Cannot change position.`);
+          return res.redirect("back");
+        }
+        positions.add(position);
+
+        const existingProduct = await Product.findOne({ position: parseInt(position, 10) });
+        if (existingProduct) {
+          req.flash('error', `Position ${position} is already taken by another product. Cannot change position.`);
+          return res.redirect("back");
+        }
+
+        await Product.updateOne(
+          { _id: id }, 
+          { position: parseInt(position, 10) }
+        );
+      }
+      break;
     default:
       break;
   }
   
-  const updatedProducts = await Product.updateMany(
-    { _id: { $in: ids } }, // Điều kiện tìm kiếm
-    { status: updateStatus, }, // Cập nhật status
-    { null: false }
-  );
+  if (type !== "delete-all" && type !== "change-position") {
+    await Product.updateMany(
+      { _id: { $in: ids } },
+      { status: updateStatus }
+    );
+  }
 
   res.redirect("back");
 };

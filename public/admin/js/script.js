@@ -92,39 +92,52 @@ const checkBoxMulti = document.querySelector("[checkbox-multi]");
 
 // Form Change Multi
 const formChangeMulti = document.querySelector("[form-change-multi]");
-    if (formChangeMulti) {
-        formChangeMulti.addEventListener("submit", (e) => {
-            e.preventDefault();
+if (formChangeMulti) {
+    formChangeMulti.addEventListener("submit", (e) => {
+        e.preventDefault();
+        console.log("Form submitted");  // Debugging line
 
-            const checkBoxMulti = document.querySelector("[checkbox-multi]");
-            const inputChecked = checkBoxMulti.querySelectorAll("input[name='id']:checked");
+        const checkBoxMulti = document.querySelector("[checkbox-multi]");
+        const inputChecked = checkBoxMulti.querySelectorAll("input[name='id']:checked");
+        console.log(inputChecked);  // Debugging line
 
-            const typeChange = e.target.elements.value;
-
-            if(typeChange == "delete-all") {
-                const isConfirm = confirm("Bạn có chắc muốn xóa tất cả !?")
-                if(!isConfirm) {
-                    return;
-                }
+        const typeChange = formChangeMulti.elements['type'].value;  // Corrected form element access
+        if(typeChange == "delete-all") {
+            const isConfirm = confirm("Bạn có chắc muốn xóa tất cả !?")
+            if(!isConfirm) {
+                return;
             }
-            
-            if (inputChecked.length == 0) {
-                alert("Vui lòng chọn 1 sản phẩm để thực hiện hành động !!!");
-            } else {
-                let ids = [];
-                const inputIds = document.querySelector("input[name='ids']");
+        }
+        
+        if (inputChecked.length == 0) {
+            alert("Vui lòng chọn 1 sản phẩm để thực hiện hành động !!!");
+        } else {
+            let ids = [];
+            const inputIds = document.querySelector("input[name='ids']");
 
-                inputChecked.forEach(input => {
-                    const id = input.getAttribute("value");
+            inputChecked.forEach(input => {
+                const id = input.value;
+                if (typeChange == "change-position") {
+                    const trElement = input.closest("tr");
+                    console.log(trElement);  // Debugging line
+                    const positionInput = trElement.querySelector("input[name='position']");
+                    console.log(positionInput);  // Debugging line
+                    if (positionInput) {
+                        const position = positionInput.value;
+                        console.log(`ID: ${id}, Position: ${position}`);  // Debugging line
+                        ids.push(`${id}-${position}`);
+                    } else {
+                        console.log(`Position input not found for id: ${id}`);  // Debugging line
+                    }
+                } else {
                     ids.push(id);
-                });
-                
-                inputIds.value = ids.join(", ");
-            }
-            
+                }
+            });
+            inputIds.value = ids.join(", ");
             formChangeMulti.submit();
-        });
-    }
+        }
+    });
+}
 // END Form Change Multi
 
 

@@ -1,6 +1,6 @@
 const express = require("express");
 var methodOverride = require('method-override');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
 require("dotenv").config();
 
 const database = require("./config/database");
@@ -36,5 +36,5 @@ route(app);
 routeAdmin(app);
 
 app.listen(port, () => {
-  console.log(`Đã chạy thành công vào cổng ${port}`);
+  console.log(`Server is running on http://localhost:${port}`);
 });
