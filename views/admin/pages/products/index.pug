@@ -22,7 +22,9 @@ block main
   .card.mb-3 
     .card-header Product List
       .card-body 
-        +form-change-multi(path, listActive)
+        .col-8
+          +form-change-multi(path, listActive)
+        
         table(
           class="table table-hover table-sm"
           checkbox-multi

@@ -1,8 +1,6 @@
 mixin alert-success(time)
     - if (messages.success)
-        .message.info
-            div(
-                class="alert alert-success"
-                show-alert
-                data-time=time
-            ) #{messages.success} <span close-alert>x</span>
+        .alert.alert-success.alert-dismissible.fade.show(role="alert" show-alert data-time=time)
+            button(type="button" class="close" data-dismiss="alert" aria-label="Close")
+                span(aria-hidden="true") &times;
+            | #{messages.success}

@@ -20,7 +20,14 @@ block main
   .card.mb-3 
     .card-header List Product on Stock
       .card-body 
-        +form-change-multi(path, listActive)
+        .row 
+          .col-8
+            +form-change-multi(path, listActive)
+          .col-4
+            a(
+              href=`${prefixAdmin}/stocks/create`
+              class="btn btn-outline-success"
+            ) + Add New
         
         table(
           class="table table-hover table-sm"

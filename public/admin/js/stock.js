@@ -21,6 +21,8 @@ if (buttonPostForSale) {
     });
 }
 
+
+// DELETE BUTTON PRODUCTS
 const buttonDeletdProduct = document.querySelectorAll("[button-delete-product]")
 if (buttonDeletdProduct) {
     const formDeleteProduct = document.querySelector("#form-delete-product");
@@ -42,3 +44,16 @@ if (buttonDeletdProduct) {
         })
     })
 }
+// END
+
+// FORM SUBMIT NUMBER EQUAL 0
+document.getElementById('productForm').addEventListener('submit', (e) => {
+    const price = document.getElementById('price').value;
+    const discount = document.getElementById('discount').value;
+    const stocks = document.getElementById('stocks').value;
+
+    if (price == 0 || discount == 0 || stocks == 0) {
+        alert('Price, discount, and stocks must be greater than 0.');
+        e.preventDefault();
+    }
+});

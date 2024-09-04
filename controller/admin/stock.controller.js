@@ -68,7 +68,7 @@ module.exports.index = async (req, res) => {
     
     res.render("admin/pages/stock/index", {
       pageTitle: "Product warehouse",
-      products: products,
+      products: newProduct,
       filterStatus: filterStatus,
       filterKeyword: filterKeyword,
       pagination: productPagination,
@@ -126,5 +126,39 @@ module.exports.delete = async (req, res) => {
   await Product.deleteOne(
     {_id: id}
   );
+  res.redirect("back");
+};
+
+// [GET] /admin/stocks/create
+module.exports.create = async (req, res) =>{
+  res.render("admin/pages/stock/create", {
+    pageTitle: "Add New Products",
+    messages: req.flash(),
+    prefixAdmin: '/admin'
+  });
+};
+
+// [POST] /admin/stocks/createPost
+module.exports.createPost = async (req, res) =>{
+  console.log(req.body);
+  console.log(req.file);
+
+  const newProduct = new Product({
+    title: req.body.title,
+    description: req.body.description,
+    category: req.body.category,
+    price: parseInt(req.body.price),
+    discountPercentage: req.body.discount,
+    stock: req.body.quantity,
+    thumbnail: req.file ? req.file.filename : null, // Store the filename of the uploaded image
+    status: req.body.status,
+    deleted: true,
+    position: req.body.position
+  });
+
+  await newProduct.save();
+
+  req.flash("success", "Upload Product successfully !!!");
+
   res.redirect("back");
 };

@@ -15,7 +15,7 @@ const productSchema = new mongoose.Schema(
         deletedAt: Date,
         postAt: Date,
         position: Number
-    }
+    }, { timestamps: true }
 );
 
 const Product = mongoose.model('Product', productSchema, "products");

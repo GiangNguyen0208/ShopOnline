@@ -160,7 +160,6 @@ module.exports.delete = async (req, res) => {
       deletedAt: new Date()
     }
   );
-
   res.redirect("back");
 };
 
