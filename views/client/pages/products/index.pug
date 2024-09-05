@@ -3,33 +3,35 @@ include ../../mixins/box-head.pug
 
 block main
 
-    .container.my-3
+    .container.my-5
         .row
             .col-12
                 +box-head("Danh sách sản phẩm")
                
         .row 
             each item in products 
-                .card(style='width: 18rem;').product-item
-                    img.card-img-top(src=item.thumbnail, alt=item.title)
-                    .card-body
-                        h5.card-title #{item.title}
-                        p.card-text
-                        | #{item.description}
-                        h5.card-price-new #{item.priceNew}
-                        h5.card-price-old #{item.priceFormat}
-                        h5.card-discount -#{item.discountPercentage}%
-                        a.btn.btn-primary(href='#') Buy Now
+                .col-md-4
+                    .card.mb-4.shadow-sm
+                        img.card-img-top(src=item.thumbnail, alt=item.title)
+                        .card-body
+                            h5.card-title #{item.title}
+                            p.card-text
+                            | #{item.description}
+                            .d-flex.justify-content-between.align-items-center
+                                p.card-price-new Current Price #{item.priceNew}
+                                p.card-price-old.text-muted Original Price #{item.priceFormat}
+                                p.card-discount.text-danger Percent #{item.discountPercentage}%
+                                a.btn.btn-primary(href='#') Buy Now
 
     nav
-        ul.pagination
+        ul.pagination.justify-content-center
             li.page-item
-            a.page-link(href='#') Trang trước
+                a.page-link(href='#') Trang trước
             li.page-item
-            a.page-link(href='#') 1
+                a.page-link(href='#') 1
             li.page-item
-            a.page-link(href='#') 2
+                a.page-link(href='#') 2
             li.page-item
-            a.page-link(href='#') 3
+                a.page-link(href='#') 3
             li.page-item
-            a.page-link(href='#') Kế tiếp
+                a.page-link(href='#') Kế tiếp

@@ -9,6 +9,7 @@ const filterStatusHelper = require("../../helper/filterStatus");
 const filterKeywordHelper = require("../../helper/filterKeyword");
 const formatVNDHelper = require("../../helper/formatVND");
 const paginationHelper = require("../../helper/pagination");
+const system = require("../../config/system");
 
 // [GET] /admin/stocks
 module.exports.index = async (req, res) => {
@@ -143,6 +144,12 @@ module.exports.createPost = async (req, res) =>{
   console.log(req.body);
   console.log(req.file);
 
+  const existingPosition = await Product.findOne({ position: req.body.position });
+  if (existingPosition) {
+    req.flash("error", "Vị trí sản phẩm đã tồn tại."); // Thêm thông báo flash
+    return res.redirect("back");
+  }
+
   const newProduct = new Product({
     title: req.body.title,
     description: req.body.description,
@@ -150,7 +157,7 @@ module.exports.createPost = async (req, res) =>{
     price: parseInt(req.body.price),
     discountPercentage: req.body.discount,
     stock: req.body.quantity,
-    thumbnail: req.file ? req.file.filename : null, // Store the filename of the uploaded image
+    thumbnail: req.file ? `/uploads/${req.file.filename}` : null, // Store the filename of the uploaded image
     status: req.body.status,
     deleted: true,
     position: req.body.position
@@ -160,5 +167,5 @@ module.exports.createPost = async (req, res) =>{
 
   req.flash("success", "Upload Product successfully !!!");
 
-  res.redirect("back");
+  res.redirect(`${config.prefixAdmin}/stocks`);
 };
