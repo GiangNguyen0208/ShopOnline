@@ -2,7 +2,6 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-
 // Set up the upload directory
 const uploadDir = path.join(__dirname, '../public/uploads/'); // Adjust the path to public/images
 

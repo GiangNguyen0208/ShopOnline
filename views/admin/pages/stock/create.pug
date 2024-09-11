@@ -3,6 +3,7 @@ include ../../mixins/alert.pug
 
 block main 
     +alert-success(2000)
+    +alert-error(2000)
     
     h1(class="mb-4") ADD NEW PRODUCT
 
@@ -12,19 +13,19 @@ block main
         id="productForm")
         .form-group
             label(for="title") Title
-            input#title.form-control(type="text" name="title" required)
+            input#title.form-control(type="text" name="title")
         
         .form-group
             label(for="description") Description
-            textarea#description.form-control(name="description" rows="3" required)
+            textarea#description.form-control(name="description" rows="3")
         
         .form-group
             label(for="price") Price
-            input#price.form-control(type="number" name="price" step="0.01" min="0" required)
+            input#price.form-control(type="number" name="price" step="0.01" min="0")
         
         .form-group
             label(for="category") Category
-            input#category.form-control(type="text" name="category" required)
+            input#category.form-control(type="text" name="category")
         
         .form-group
             label(for="discount") Discount
@@ -32,21 +33,23 @@ block main
         
         .form-group
             label(for="quantity") Stock
-            input#stocks.form-control(type="number" name="quantity" min="0" required)
+            input#stocks.form-control(type="number" name="quantity" min="0")
         
-        .form-group
+        .form-group(upload-image)
             label(for="thumbnail") Thumbnail
-            input#thumbnail.form-control-file(type="file" name="thumbnail" accept="image/*" required)
-        
+            input#thumbnail.form-control-file(type="file" name="thumbnail" accept="image/*" required upload-image-input)
+            img.image-preview(src="" upload-image-preview)
+            button.btn.btn-danger(type="button" delete-image-preview style="display: none;") X
+
         .form-group
             label(for="status") Status
-            select#status.form-control(name="status" required)
+            select#status.form-control(name="status")
                 option(value="active") Active
                 option(value="inactive") Inactive
         
         .form-group
             label(for="position") Position
-            input#position.form-control(type="number" name="position" min="0" required)
+            input#position.form-control(type="number" name="position" min="0")
         
         button.btn.btn-primary(type="submit") New Create
 

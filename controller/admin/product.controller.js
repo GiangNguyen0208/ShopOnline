@@ -163,5 +163,35 @@ module.exports.delete = async (req, res) => {
   res.redirect("back");
 };
 
+// [GET] /admin/products/edit/:id 
+module.exports.edit = async (req, res) => {
+  console.log(req.params.id);
 
+  try {
+    const find = {
+      deleted: false,
+      _id: req.params.id
+    };
+  
+    const product = await Product.findOne(find);
+  
+    if (!product) {
+      req.flash("error", "Product not found!");
+      return res.redirect("back");
+    }
+  
+    res.render("admin/pages/products/edit", {
+      pageTitle: "Edit Products",
+      product: product
+    });
+  } catch (error) {
+    req.flash("error", "Product not found!");
+    res.redirect(`${config.prefixAdmin}/products`);
+  }
+};
 
+// [PATCH] /admin/products/edit/:id
+module.exports.editPatch = async (req, res) => {
+  console.log(req.body);
+  res.send("OK");
+};

@@ -1,0 +1,56 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main 
+    +alert-success(2000)
+    +alert-error(2000)
+    
+    h1(class="mb-4") EDIT PRODUCT
+
+    form(action=`${prefixAdmin}/products/edit/${product.id}?_method=PATCH` 
+        method="POST" 
+        enctype="multipart/form-data" 
+        id="productForm")
+        .form-group
+            label(for="title") Title
+            input#title.form-control(type="text" name="title" value=product.title)
+        
+        .form-group
+            label(for="description") Description
+            textarea#description.form-control(name="description" rows="3")= product.description
+        
+        .form-group
+            label(for="price") Price
+            input#price.form-control(type="number" name="price" step="0.01" min="0" value=product.price)
+        
+        .form-group
+            label(for="category") Category
+            input#category.form-control(type="text" name="category" value=product.category)
+        
+        .form-group
+            label(for="discount") Discount
+            input#discount.form-control(type="number" name="discount" min="0" step="0.01" value=product.discountPercentage)
+        
+        .form-group
+            label(for="quantity") Stock
+            input#stocks.form-control(type="number" name="quantity" min="0" value=product.stock)
+        
+        .form-group(upload-image)
+            label(for="thumbnail") Thumbnail
+            input#thumbnail.form-control-file(type="file" name="thumbnail" accept="image/*" upload-image-input)
+            img.image-preview(src=product.thumbnail upload-image-preview)
+            button.btn.btn-danger(type="button" delete-image-preview style="display: none;") X
+
+        .form-group
+            label(for="status") Status
+            select#status.form-control(name="status")
+                option(value="active" selected=product.status === 'active') Active
+                option(value="inactive" selected=product.status === 'inactive') Inactive
+        
+        .form-group
+            label(for="position") Position
+            input#position.form-control(type="number" name="position" min="0" value=product.position)
+        
+        button.btn.btn-primary(type="submit") Update Product
+
+    script(src="/admin/js/stock.js")

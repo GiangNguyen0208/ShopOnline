@@ -145,9 +145,11 @@ module.exports.createPost = async (req, res) =>{
   console.log(req.file);
 
   const existingPosition = await Product.findOne({ position: req.body.position });
-  if (existingPosition) {
-    req.flash("error", "Vị trí sản phẩm đã tồn tại."); // Thêm thông báo flash
-    return res.redirect("back");
+  
+  // Check if position is empty and set to the next available position
+  if (!req.body.position || existingPosition) {
+    const maxPosition = await Product.findOne({}, {}, { sort: { position: -1 } });
+    req.body.position = maxPosition ? maxPosition.position + 1 : 1; // Increment position
   }
 
   const newProduct = new Product({

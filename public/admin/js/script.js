@@ -158,6 +158,40 @@ if(showAlert) {
 }
 // End Show alert
 
+// PREVIEW UPLOAD IMAGE
+const uploadImage = document.querySelector("[upload-image]");
+if(uploadImage) {
+    const uploadImageInput = document.querySelector("[upload-image-input]");
+    const uploadImagePreview = document.querySelector("[upload-image-preview]");
+    const deleteImagePreview = document.querySelector("[delete-image-preview]");
+
+    const toggleDeleteButton = () => {
+        if (uploadImagePreview.src) {
+            deleteImagePreview.classList.remove("hidden");
+        } else {
+            deleteImagePreview.classList.add("hidden");
+        }
+    };
+
+    deleteImagePreview.addEventListener("click", (e) => {
+        uploadImageInput.value = "";
+        uploadImagePreview.src = "";
+        toggleDeleteButton();
+    });
+
+    uploadImageInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if(file) {
+            uploadImagePreview.src = URL.createObjectURL(file);
+        }
+        toggleDeleteButton();
+    });
+    toggleDeleteButton();
+}
+// END PREVIEW UPLOAD IMAGE
+
+
+
 
 
 
