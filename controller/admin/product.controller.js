@@ -192,6 +192,28 @@ module.exports.edit = async (req, res) => {
 
 // [PATCH] /admin/products/edit/:id
 module.exports.editPatch = async (req, res) => {
-  console.log(req.body);
-  res.send("OK");
+  const productId = req.params.id;
+  console.log(JSON.stringify(req.body));
+    try {
+        const updatedData = req.body; 
+
+        if (req.file) {
+            updatedData.thumbnail = req.file.path; 
+        }
+
+        const updatedProduct = await Product.findByIdAndUpdate(productId, updatedData, { new: true });
+
+        if (!updatedProduct) {
+            req.flash("error", "Product not found!");
+            return res.redirect("back");
+        }
+
+        req.flash("success", "Product updated successfully!");
+        res.redirect(`${config.prefixAdmin}/products`);
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Error updating product!");
+        res.redirect("back");
+    }
 };
+
