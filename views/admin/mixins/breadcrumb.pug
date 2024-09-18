@@ -1,0 +1,5 @@
+mixin breadcrumb(navlist)
+    nav(aria-label='breadcrumb')
+      ol.breadcrumb
+      each nav in navlist
+        li.breadcrumb-item.active(aria-current='page')= nav

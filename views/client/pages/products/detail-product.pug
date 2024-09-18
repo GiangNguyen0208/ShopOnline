@@ -1,0 +1,23 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main
+    .container
+        .row
+            .col-md-6
+                img(src=product.thumbnail, alt="Product Image", class="img-fluid rounded shadow")
+            .col-md-6
+                .card.shadow
+                .card-body
+                    h2 #{product.title}
+                    p Description: #{product.description}
+                    p PriceNow: #{product.priceFormat}
+                    p PriceOld: #{product.price}
+                    p Discount: #{product.discountPercentage}%
+                    p Stock: #{product.stock}
+                    p Status: #{product.status}
+                    p Position: #{product.position}
+                a(
+                href=`${prefixAdmin}/products/edit/${product.id}`
+                class="btn btn-warning btn-sm"
+                ) Add to Cart

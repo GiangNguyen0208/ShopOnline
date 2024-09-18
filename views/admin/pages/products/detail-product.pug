@@ -1,0 +1,38 @@
+extends ../../layouts/default.pug
+
+block main
+  .container.mt-4
+    h1.mb-4 #{product.name}
+    .card
+      .card-body
+        .row
+          .col-md-6
+            h4.card-title.font-weight-bold Thông tin sản phẩm
+            p.card-text
+              strong Price:
+              | #{product.price} $
+            p.card-text
+              strong Description:
+              | #{product.description}
+            p.card-text
+              strong Category:
+              | #{product.category}
+            p.card-text
+              strong Stock:
+              | #{product.stock}
+            p.card-text
+              strong Discount:
+              | #{product.discountPercentage}
+            p.card-text
+              strong Position:
+              | #{product.position}
+          .col-md-6    
+            img(src=product.thumbnail alt=product.slug class="img-fluid mb-3" width="350px" height="auto")
+    a(
+      href=`${prefixAdmin}/products/edit/${product.id}`
+      class="btn btn-warning btn-sm mt-3 w-100 font-weight-bold"
+    ) Fix Product Infomation
+
+
+
+  

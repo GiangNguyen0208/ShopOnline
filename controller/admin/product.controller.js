@@ -217,3 +217,30 @@ module.exports.editPatch = async (req, res) => {
     }
 };
 
+// [GET] /admin/products/detail/:id
+module.exports.detail = async (req, res) => {
+  console.log(req.params.id);
+
+  try {
+    const find = {
+      deleted: false,
+      _id: req.params.id
+    };
+  
+    const product = await Product.findOne(find);
+  
+    if (!product) {
+      req.flash("error", "Product not found!");
+      return res.redirect("back");
+    }
+  
+    res.render("admin/pages/products/detail-product", {
+      pageTitle: "Detail Products",
+      product: product
+    });
+  } catch (error) {
+    req.flash("error", "Product not found!");
+    res.redirect(`${config.prefixAdmin}/products`);
+  }
+}
+

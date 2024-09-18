@@ -30,3 +30,28 @@ module.exports.index = async (req, res) => {
         products: newProduct
     });
 }
+
+// [GET] /products/:slug
+module.exports.detail = async (req, res) => {
+    try {
+        const find = {
+          deleted: false,
+          slug: req.params.slug
+        };
+      
+        const product = await Product.findOne(find);
+      
+        if (!product) {
+          req.flash("error", "Product not found!");
+          return res.redirect("back");
+        }
+      
+        res.render("client/pages/products/detail-product", {
+          pageTitle: "Detail Products",
+          product: product
+        });
+      } catch (error) {
+        req.flash("error", "Product not found!");
+        res.redirect(`/products`);
+    }
+}
