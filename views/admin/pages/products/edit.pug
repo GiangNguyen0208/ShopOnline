@@ -28,12 +28,12 @@ block main
             input#category.form-control(type="text" name="category" value=product.category required)
         
         .form-group
-            label(for="discount") Discount
-            input#discount.form-control(type="number" name="discount" min="0" step="0.01" value=product.discountPercentage required)
+            label(for="discountPercentage") Discount
+            input#discount.form-control(type="number" name="discountPercentage" min="0" step="0.01" value=product.discountPercentage required)
         
         .form-group
-            label(for="quantity") Stock
-            input#stocks.form-control(type="number" name="quantity" min="0" value=product.stock required)
+            label(for="stock") Stock
+            input#stocks.form-control(type="number" name="stock" min="0" value=product.stock required)
         
         .form-group(upload-image)
             label(for="thumbnail") Thumbnail

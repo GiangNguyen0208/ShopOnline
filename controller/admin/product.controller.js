@@ -84,7 +84,6 @@ module.exports.index = async (req, res) => {
 
 // [PATCH] /admin/products/change-status/:status/:id
 module.exports.changeStatus = async (req, res) => {
-  console.log(req.params);
   const status = req.params.status;
   const id = req.params.id;  
 
@@ -97,7 +96,6 @@ module.exports.changeStatus = async (req, res) => {
 
 // [PATCH] /admin/products/change-multi
 module.exports.changeMulti = async (req, res) => {
-  console.log(req.body);
   const type = req.body.type;
   const ids = req.body.ids.split(", ");
 
@@ -147,7 +145,6 @@ module.exports.changeMulti = async (req, res) => {
 
 // [DELETE] /admin/products/:id
 module.exports.delete = async (req, res) => {
-  console.log(req.params);
   const id = req.params.id;
 
   req.flash("success", "Deleted successfully a item !!!");
@@ -165,7 +162,6 @@ module.exports.delete = async (req, res) => {
 
 // [GET] /admin/products/edit/:id 
 module.exports.edit = async (req, res) => {
-  console.log(req.params.id);
 
   try {
     const find = {
@@ -192,35 +188,34 @@ module.exports.edit = async (req, res) => {
 
 // [PATCH] /admin/products/edit/:id
 module.exports.editPatch = async (req, res) => {
-  const productId = req.params.id;
-  console.log(JSON.stringify(req.body));
-    try {
-        const updatedData = req.body; 
-
-        if (req.file) {
-            updatedData.thumbnail = req.file.path; 
-        }
-
-        const updatedProduct = await Product.findByIdAndUpdate(productId, updatedData, { new: true });
-
-        if (!updatedProduct) {
-            req.flash("error", "Product not found!");
-            return res.redirect("back");
-        }
-
-        req.flash("success", "Product updated successfully!");
-        res.redirect(`${config.prefixAdmin}/products`);
-    } catch (error) {
-        console.error(error);
-        req.flash("error", "Error updating product!");
-        res.redirect("back");
+  try {
+    console.log(req.body);
+    const id = req.params.id;
+    if(req.file && req.file.filename) {
+      req.body.thumbnail = `/uploads/${req.file.filename}`;
     }
-};
+    req.body.price = parseInt(req.body.price);
+    req.body.discountPercentage = parseInt(req.body.discountPercentage);
+    req.body.stock = parseInt(req.body.stock);
+    if(req.body.position) {
+      req.body.position = parseInt(req.body.position);
+    } else {
+      const countProducts = await Product.countDocuments({});
+      req.body.position = countProducts + 1;
+    }
+    await Product.updateOne({
+      _id: id,
+      deleted: false
+    }, req.body);
+    req.flash("success", "Cập nhật sản phẩm thành công!");
+  } catch (error) {
+    req.flash("error", "Id sản phẩm không hợp lệ!");
+  }
+  res.redirect("back");
+}
 
 // [GET] /admin/products/detail/:id
 module.exports.detail = async (req, res) => {
-  console.log(req.params.id);
-
   try {
     const find = {
       deleted: false,
