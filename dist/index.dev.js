@@ -43,10 +43,10 @@ app.use(session({
 app.use(flash());
 app.use('/uploads', express["static"]('uploads')); // Set up view engine
 
-app.set("views", "./views");
+app.set("views", "".concat(__dirname, "/views"));
 app.set("view engine", "pug"); // Static files
 
-app.use(express["static"]("public")); // App local variables
+app.use(express["static"]("".concat(__dirname, "/public"))); // App local variables
 
 app.locals.prefixAdmin = systemConfig.prefixAdmin; // Routes
 

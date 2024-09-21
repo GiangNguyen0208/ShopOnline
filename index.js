@@ -31,11 +31,11 @@ app.use(flash());
 app.use('/uploads', express.static('uploads'));
 
 // Set up view engine
-app.set("views", "./views");
+app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
 
 // Static files
-app.use(express.static("public"));
+app.use(express.static(`${__dirname}/public`));
 
 // App local variables
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
