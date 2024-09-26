@@ -123,6 +123,7 @@ module.exports.changeMulti = async (req, res) => {
 // [DELETE] /admin/stocks/:id
 module.exports.delete = async (req, res) => {
   const id = req.params.id;
+  req.flash("success", "Deleted successfully a item !!!");
   // Delete item on view
   await Product.deleteOne(
     {_id: id}
@@ -159,10 +160,10 @@ module.exports.createPost = async (req, res) =>{
     price: parseInt(req.body.price),
     discountPercentage: req.body.discount,
     stock: req.body.quantity,
-    thumbnail: req.file ? `/uploads/${req.file.filename}` : null, // Store the filename of the uploaded image
     status: req.body.status,
     deleted: true,
-    position: req.body.position
+    position: req.body.position,
+    thumbnail: req.body.thumbnail 
   });
 
   await newProduct.save();

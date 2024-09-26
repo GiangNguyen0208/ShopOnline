@@ -34,8 +34,8 @@ if (buttonDeletdProduct) {
 
             if(isConfirm) {
                 button.disabled = true; 
-                const id = button.value;
-                const action = path + `/${id}?_method=DELETE`;
+                const id = button.getAttribute("data-id"); 
+                const action = path + `/${id}?_method=DELETE`; 
                 formDeleteProduct.action = action;
                 formDeleteProduct.submit();
             } else {
