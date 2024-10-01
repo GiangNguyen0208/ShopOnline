@@ -25,3 +25,4 @@ yarn-error.log*
 # dist
 dist/*
 dist/ 
+dist/index.dev.js
