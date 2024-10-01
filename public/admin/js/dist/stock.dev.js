@@ -1,5 +1,13 @@
 "use strict";
 
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 var buttonPostForSale = document.querySelectorAll("[button-post-sale]");
 
 if (buttonPostForSale) {
@@ -61,4 +69,41 @@ document.getElementById('productForm').addEventListener('submit', function (e) {
     alert('Price, discount, and stocks must be greater than 0.');
     e.preventDefault();
   }
-});
+}); // SORT PRICE, TITLE, POSITION
+
+var sort = document.querySelector("[sort]");
+
+if (sort) {
+  var url = new URL(window.location.href);
+  var sortSelect = sort.querySelector("[sort-select]");
+  var sortClear = sort.querySelector("[sort-clear]");
+  sortSelect.addEventListener("change", function (e) {
+    var value = e.target.value;
+
+    var _value$split = value.split("-"),
+        _value$split2 = _slicedToArray(_value$split, 2),
+        sortKey = _value$split2[0],
+        sortValue = _value$split2[1];
+
+    url.searchParams.set("sortKey", sortKey);
+    url.searchParams.set("sortValue", sortValue);
+    window.location.href = url.href;
+  }); // DELETE ARRANGE
+
+  sortClear.addEventListener("click", function () {
+    url.searchParams["delete"]("sortKey");
+    url.searchParams["delete"]("sortValue");
+    window.location.href = url.href;
+  }); // END DELETE ARRANGE
+  // ADD SELECT 
+
+  var sortKey = url.searchParams.get("sortKey");
+  var sortValue = url.searchParams.get("sortValue");
+
+  if (sortKey && sortValue) {
+    var stringSort = "".concat(sortKey, "-").concat(sortValue);
+    var optionSelected = sortSelect.querySelector("option[value='".concat(stringSort, "']"));
+    optionSelected.selected = true;
+  } // END ADD SELECT
+
+} // END SORT PRICE, TITLE, POSITION

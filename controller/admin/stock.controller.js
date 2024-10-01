@@ -19,6 +19,9 @@ module.exports.index = async (req, res) => {
     // Define list Active
     const listActive = ['post','delete-all'];
 
+    // Define Select option
+    const select = ["position-desc", "position-asc", "price-desc", "price-asc", "title-desc", "title-asc", ]
+
     // Format VND
     const numberFormat = formatVNDHelper.numberFormatter();
     
@@ -74,6 +77,7 @@ module.exports.index = async (req, res) => {
       filterKeyword: filterKeyword,
       pagination: productPagination,
       listActive: listActive,
+      select: select,
       path: path
     });
 };

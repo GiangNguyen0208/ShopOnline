@@ -1,0 +1,19 @@
+mixin sort(select)
+    .card.mb-3 
+      .card-header Arrange 
+      .card-body 
+        .row 
+          .col-4 
+            div(sort)
+              select(
+                class="form-control"
+                name="sort"
+                sort-select 
+              )
+                each item in select
+                  option(value=item)= item.toUpperCase().replace(/-/g, ' ')
+
+              button(
+                class="btn btn-danger mt-2"
+                sort-clear
+              ) Clear

@@ -3,6 +3,7 @@ include ../../mixins/filter-status.pug
 include ../../mixins/search.pug
 include ../../mixins/pagination.pug
 include ../../mixins/form-change-multi.pug
+include ../../mixins/sort.pug
 
 block main
   h1 Product warehouse
@@ -15,7 +16,8 @@ block main
           +filter-status(filterStatus)
         .col-6 
           +search(keyword)
-          
+  
+  +sort(select)        
 
   .card.mb-3 
     .card-header List Product on Stock

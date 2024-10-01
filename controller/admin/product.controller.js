@@ -16,6 +16,9 @@ module.exports.index = async (req, res) => {
   // Define path
   const path = config.prefixAdmin + "/products";
 
+  // Define Select option
+  const select = ["position-desc", "position-asc", "price-desc", "price-asc", "title-desc", "title-asc", ]
+
   // Define listActive
   const listActive = ["active", "inactive", "delete-all", "change-position"];
 
@@ -53,6 +56,17 @@ module.exports.index = async (req, res) => {
   );
   // END Pagination
 
+  // SORT
+  let sort = {};
+
+  if (req.query.sortKey && req.query.sortValue) {
+    sort[req.query.sortKey] = req.query.sortValue;
+  } else {
+    sort.position = "desc";
+  }
+
+  // END SORT
+
   // Return Product
   const products = await Product.find(find)
     .sort({ position: "desc" })
@@ -77,6 +91,7 @@ module.exports.index = async (req, res) => {
     filterKeyword: filterKeyword,
     pagination: productPagination,
     listActive: listActive,
+    select: select,
     path: path,
     messages: req.flash()
   });
@@ -237,5 +252,9 @@ module.exports.detail = async (req, res) => {
     req.flash("error", "Product not found!");
     res.redirect(`${config.prefixAdmin}/products`);
   }
+}
+
+module.exports.select = async (req, res) => {
+  res.send("OK");
 }
 

@@ -5,6 +5,7 @@ const router = express.Router();
 const controller = require("../../controller/admin/product.controller");
 const validate = require("../../validates/admin/stock.validate");
 
+const uploadCloud = require("../../middleware/admin/uploadCloud.middleware");
 const upload = multer(); // Đường dẫn lưu trữ tệp
 
 router.get("/", controller.index);
@@ -15,7 +16,7 @@ router.get("/edit/:id", controller.edit);
 router.patch(
     "/edit/:id", 
     upload.single('thumbnail'),
-     
+    uploadCloud.upload,
     validate.createPost, 
     controller.editPatch
 );

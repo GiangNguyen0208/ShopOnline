@@ -19,7 +19,7 @@ var system = require("../../config/system"); // [GET] /admin/stocks
 
 
 module.exports.index = function _callee(req, res) {
-  var path, listActive, numberFormat, filterStatus, find, filterKeyword, countProduct, productPagination, products, newProduct;
+  var path, listActive, select, numberFormat, filterStatus, find, filterKeyword, countProduct, productPagination, products, newProduct;
   return regeneratorRuntime.async(function _callee$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
@@ -27,7 +27,9 @@ module.exports.index = function _callee(req, res) {
           // Define path
           path = config.prefixAdmin + "/stocks"; // Define list Active
 
-          listActive = ['post', 'delete-all']; // Format VND
+          listActive = ['post', 'delete-all']; // Define Select option
+
+          select = ["position-desc", "position-asc", "price-desc", "price-asc", "title-desc", "title-asc"]; // Format VND
 
           numberFormat = formatVNDHelper.numberFormatter(); // Filter Status
 
@@ -46,10 +48,10 @@ module.exports.index = function _callee(req, res) {
           filterKeyword = filterKeywordHelper(req.query, find); // END Filter KEYWORK
           // Product Count
 
-          _context.next = 9;
+          _context.next = 10;
           return regeneratorRuntime.awrap(Product.countDocuments(find));
 
-        case 9:
+        case 10:
           countProduct = _context.sent;
           // Pagination 
           productPagination = paginationHelper({
@@ -58,10 +60,10 @@ module.exports.index = function _callee(req, res) {
           }, req.query, countProduct); // END Pagination
           // Return Product
 
-          _context.next = 13;
+          _context.next = 14;
           return regeneratorRuntime.awrap(Product.find(find).limit(productPagination.limitItem).skip(productPagination.skip));
 
-        case 13:
+        case 14:
           products = _context.sent;
           // Format price to VND
           newProduct = products.map(function (item) {
@@ -78,10 +80,11 @@ module.exports.index = function _callee(req, res) {
             filterKeyword: filterKeyword,
             pagination: productPagination,
             listActive: listActive,
+            select: select,
             path: path
           });
 
-        case 16:
+        case 17:
         case "end":
           return _context.stop();
       }
