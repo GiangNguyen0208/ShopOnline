@@ -1,0 +1,92 @@
+block main
+  h1 Product Category
+
+  // New section for displaying categories
+  .card.mb-3 
+    .card-header Category List
+      .card-body 
+        table(
+          class="table table-hover table-sm"
+        )
+          thead 
+            tr 
+              th Category Name
+              th Action
+          tbody 
+            each category in categories
+              tr 
+                td #{category.name}
+                td 
+                  a(
+                    href=`/admin/categories/edit/${category.id}`
+                    class="btn btn-warning btn-sm"
+                  ) Edit 
+                  button(
+                    class="btn btn-danger btn-sm nl-1"
+                    button-delete-category
+                    data-id=category.id
+                    data-path=path + `/delete-category`
+                  ) Delete
+
+    .card.mb-3 
+    .card-header Product List
+      .card-body 
+        .col-8
+          +form-change-multi(path, listActive)
+        
+        table(
+          class="table table-hover table-sm"
+          checkbox-multi
+        )
+          thead 
+            tr 
+              th 
+                input(
+                  type="checkbox"
+                  name="checkall"
+                )
+              th Numeric
+              th Category
+              th State 
+              th Action
+          tbody 
+            each item,index in category 
+              tr 
+                td 
+                  input(
+                    type="checkbox"
+                    name="id"
+                    value=category.id
+                  )
+                td #{index+1}
+                td #{item.title}
+                td
+                  input(
+                    type="number"
+                    name="position"
+                    value=category.position
+                    style="width: 60px"
+                    min="1"
+                    data-id=category.id
+                  )
+                td 
+                  if(item.status == "active")
+                    a(
+                      href="javascript:;" 
+                      class="badge badge-success"
+                      button-change-status
+                      data-status=item.status
+                      data-id=item.id
+                    ) Active
+                  else
+                    a(
+                      href="javascript:;" 
+                      class="badge badge-danger"
+                      button-change-status
+                      data-status=item.status
+                      data-id=item.id
+                    ) Inactive
+
+    +pagination(pagination)
+
+    script(src="/admin/js/product.js") 
