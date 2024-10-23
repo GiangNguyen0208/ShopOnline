@@ -1,3 +1,11 @@
+extends ../../layouts/default.pug
+include ../../mixins/filter-status.pug
+include ../../mixins/search.pug
+include ../../mixins/pagination.pug
+include ../../mixins/form-change-multi.pug
+include ../../mixins/alert.pug
+include ../../mixins/sort.pug
+
 block main
   h1 Product Category
 
@@ -5,6 +13,8 @@ block main
   .card.mb-3 
     .card-header Category List
       .card-body 
+        .col-8
+          +form-change-multi(path, listActive)
         table(
           class="table table-hover table-sm"
         )
@@ -18,13 +28,13 @@ block main
                 td #{category.name}
                 td 
                   a(
-                    href=`/admin/categories/edit/${category.id}`
+                    href=`/admin/categories/edit/${category._id}`
                     class="btn btn-warning btn-sm"
                   ) Edit 
                   button(
                     class="btn btn-danger btn-sm nl-1"
                     button-delete-category
-                    data-id=category.id
+                    data-id=category._id
                     data-path=path + `/delete-category`
                   ) Delete
 
@@ -50,13 +60,13 @@ block main
               th State 
               th Action
           tbody 
-            each item,index in category 
+            each item,index in categories 
               tr 
                 td 
                   input(
                     type="checkbox"
                     name="id"
-                    value=category.id
+                    value=item._id
                   )
                 td #{index+1}
                 td #{item.title}
@@ -64,10 +74,10 @@ block main
                   input(
                     type="number"
                     name="position"
-                    value=category.position
+                    value=item.position
                     style="width: 60px"
                     min="1"
-                    data-id=category.id
+                    data-id=item.id
                   )
                 td 
                   if(item.status == "active")
@@ -90,3 +100,4 @@ block main
     +pagination(pagination)
 
     script(src="/admin/js/product.js") 
+

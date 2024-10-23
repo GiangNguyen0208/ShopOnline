@@ -1,4 +1,4 @@
 tinymce.init({
-  selector: "textarea.textarea-mce",
+  selector: "textarea",
   plugins: 'lists link image table code wordcount'
 });

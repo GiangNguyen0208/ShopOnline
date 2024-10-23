@@ -12,6 +12,6 @@ const PATH_ADMIN = systemConfig.prefixAdmin;
 router.use("/dashboard", dashboardRoutes);
 router.use("/products", productRoutes);
 router.use("/stocks", stockRoutes);
-// router.use("/category", categoryRoutes);
+router.use("/category", categoryRoutes);
 
 module.exports = router;
