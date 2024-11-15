@@ -9,8 +9,8 @@ const upload = multer();
 
 const controller = require("../../controller/admin/stock.controller");
 const validate = require("../../validates/admin/stock.validate");
-const { log } = require("console");
 
+// Define routes for category management
 router.get("/", controller.index);
 router.patch("/change-multi", controller.changeMulti);
 router.patch("/postSale/:id", controller.postSale);

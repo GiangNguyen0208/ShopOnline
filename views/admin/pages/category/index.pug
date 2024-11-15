@@ -7,42 +7,32 @@ include ../../mixins/alert.pug
 include ../../mixins/sort.pug
 
 block main
-  h1 Product Category
+  +alert-success(2000)
 
-  // New section for displaying categories
+  h1 Category
+
+  .card.mb-3 
+    .card-header Filter and Search
+    .card-body 
+      .row
+        .col-6
+          +filter-status(filterStatus)
+        .col-6 
+          +search(keyword)
+
+  +sort(select)
+
   .card.mb-3 
     .card-header Category List
       .card-body 
-        .col-8
-          +form-change-multi(path, listActive)
-        table(
-          class="table table-hover table-sm"
-        )
-          thead 
-            tr 
-              th Category Name
-              th Action
-          tbody 
-            each category in categories
-              tr 
-                td #{category.name}
-                td 
-                  a(
-                    href=`/admin/categories/edit/${category._id}`
-                    class="btn btn-warning btn-sm"
-                  ) Edit 
-                  button(
-                    class="btn btn-danger btn-sm nl-1"
-                    button-delete-category
-                    data-id=category._id
-                    data-path=path + `/delete-category`
-                  ) Delete
-
-    .card.mb-3 
-    .card-header Product List
-      .card-body 
-        .col-8
-          +form-change-multi(path, listActive)
+        .row
+          .col-8
+            +form-change-multi(path, listActive)
+          .col-4 
+            a(
+              href=`${prefixAdmin}/categories/create`
+              class="btn btn-outline-success"
+            ) + Add New
         
         table(
           class="table table-hover table-sm"
@@ -56,8 +46,10 @@ block main
                   name="checkall"
                 )
               th Numeric
+              th Image
               th Category
-              th State 
+              th Position 
+              th State
               th Action
           tbody 
             each item,index in categories 
@@ -66,10 +58,17 @@ block main
                   input(
                     type="checkbox"
                     name="id"
-                    value=item._id
+                    value=item.id
                   )
                 td #{index+1}
-                td #{item.title}
+                td 
+                  img(
+                    src=item.thumbnail
+                    alt=item.name
+                    width="100px"
+                    height="auto"
+                  )
+                td #{item.name}
                 td
                   input(
                     type="number"
@@ -96,8 +95,38 @@ block main
                       data-status=item.status
                       data-id=item.id
                     ) Inactive
+                td 
+                  a(
+                    href=`${prefixAdmin}/categories/edit/${item.id}`
+                    class="btn btn-warning btn-sm"
+                  ) Fix 
+                  a(
+                    href=`${prefixAdmin}/categories/detail/${item.id}`
+                    class="btn btn-secondary btn-sm"
+                  ) Detail
+                  button(
+                    class="btn btn-danger btn-sm nl-1"
+                    button-delete-product
+                    data-id=item.id
+                    form-delete-product
+                    data-path=path
+                  ) Delete
 
     +pagination(pagination)
+
+    form(
+      action=""
+      method="POST"
+      id="form-change-status"
+      data-path=path + `/change-status`
+    )
+
+    form(
+      action=""
+      method="POST"
+      id="form-delete-product"
+      data-path=path + `/delete`
+    )
 
     script(src="/admin/js/product.js") 
 

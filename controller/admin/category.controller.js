@@ -1,5 +1,6 @@
 // MODEL
 const Category = require("../../models/category.model");
+const Product = require("../../models/product.model");
 
 // CONFIG
 const config = require("../../config/system");
@@ -62,21 +63,90 @@ module.exports.index = async (req, res) => {
       listActive: listActive,
       filterStatus: filterStatus,
       filterKeyword: filterKeyword,
-      pagination: categoryPagination, // Fixed variable name
+      pagination: categoryPagination,
       select: select,
       path: path,
       messages: req.flash()
     });
-  };
+};
 
-// [POST] /admin/categories/create
-module.exports.create = async (req, res) => {
-  const newCategory = new Category(req.body);
-  await newCategory.save();
+// [PATCH] /admin/products/change-status/:status/:id
+module.exports.changeStatus = async (req, res) => {
+  const status = req.params.status;
+  const id = req.params.id;  
+
+  await Category.updateOne({_id: id}, {status: status});
   
-  req.flash("success", "Category created successfully!");
+  const category = await Category.findById(id);
+  
+  if (status === "inactive") {
+    if (category) {
+      await Product.updateMany(
+        { category: category.name },
+        { status: "inactive" }
+      );
+    }
+  } else if (status === "active") {
+    if (category) {
+      await Product.updateMany(
+        { category: category.name },
+        { status: "active" }
+      );
+    }
+  }
+
+  req.flash("success", "Update item status successfully !!!");
   res.redirect("back");
 };
+
+// [PATCH] /admin/categories/change-multi
+module.exports.changeMulti = async (req, res) => {
+  const type = req.body.type;
+  const ids = req.body.ids.split(", ");
+
+  let updateStatus;
+  switch (type) {
+    case "active":
+      updateStatus = "active";
+      req.flash("success", `Update status successfully ${ids.length} item !!!`);
+      break;
+    case "inactive":
+      updateStatus = "inactive";
+      req.flash("success", `Update status successfully ${ids.length} item !!!`);
+      break;
+    case "delete-all":
+      await Category.updateMany({ _id: { $in: ids } }, { 
+        deleted: true,
+        deletedAt: new Date()
+      });
+      req.flash("success", `Deleted successfully ${ids.length} item !!!`);
+      break;
+    case "change-position":
+      // const positions = new Set();
+      for (const item of ids) {
+        const [id, position] = item.split("-");
+        console.log(`ID: ${id}, Position: ${position}`);  // Debugging line
+
+        await Category.updateOne(
+          { _id: id }, 
+          { position: parseInt(position, 10) }
+        );
+      }
+      req.flash("success", `Change position successfully ${ids.length} item !!!`);
+      break;
+    default:
+      break;
+  }
+  
+  if (type !== "delete-all" && type !== "change-position") {
+    await Category.updateMany(
+      { _id: { $in: ids } },
+      { status: updateStatus }
+    );
+  }
+
+  res.redirect("back");
+};  
 
 // [PATCH] /admin/categories/edit/:id
 module.exports.edit = async (req, res) => {
@@ -111,3 +181,67 @@ module.exports.delete = async (req, res) => {
   req.flash("success", "Category deleted successfully!");
   res.redirect("back");
 };
+
+// [GET] /admin/categories/create
+module.exports.create = async (req, res) =>{
+  res.render("admin/pages/category/create", {
+    pageTitle: "Add New Category",
+    messages: req.flash(),
+    prefixAdmin: '/admin'
+  });
+};
+
+// [POST] /admin/categories/createPost
+module.exports.createPost = async (req, res) =>{
+  console.log(req.body);
+  console.log(req.file);
+
+  const existingPosition = await Category.findOne({ position: req.body.position });
+  
+  // Check if position is empty and set to the next available position
+  if (!req.body.position || existingPosition) {
+    const maxPosition = await Category.findOne({}, {}, { sort: { position: -1 } });
+    req.body.position = maxPosition ? maxPosition.position + 1 : 1; // Increment position
+  }
+
+  const newCategory = new Category({
+    name: req.body.name,
+    description: req.body.description,
+    status: req.body.status,
+    // deleted: true,
+    position: req.body.position,
+    thumbnail: req.body.thumbnail,
+    createdAt: new Date()
+  });
+
+  await newCategory.save();
+
+  req.flash("success", "Upload Category successfully !!!");
+
+  res.redirect(`${config.prefixAdmin}/categories`);
+};
+
+// [GET] /admin/categories/detail/:id
+module.exports.detail = async (req, res) => {
+  try {
+    const find = {
+      deleted: false,
+      _id: req.params.id
+    };
+  
+    const category = await Category.findOne(find);
+  
+    if (!category) {
+      req.flash("error", "Category not found!");
+      return res.redirect("back");
+    }
+  
+    res.render("admin/pages/category/detail-category", {
+      pageTitle: "Detail Category",
+      category: category
+    });
+  } catch (error) {
+    req.flash("error", "Product not found!");
+    res.redirect(`${config.prefixAdmin}/categories`);
+  }
+}

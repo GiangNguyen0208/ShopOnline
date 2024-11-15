@@ -1,0 +1,35 @@
+extends ../../layouts/default.pug
+
+block main
+  .container.mt-4
+    h1.mb-4 #{category.name}
+    .card
+      .card-body
+        .row
+          .col-md-6
+            h4.card-title.font-weight-bold Category Infomation
+            p.card-text
+              strong Price:
+              | #{category.price} $
+            p.card-text
+              strong Description:
+              | #{category.description}
+            p.card-text
+              strong Category:
+              | #{category.name}
+            p.card-text
+              strong Stock:
+              | #{category.stock}
+            p.card-text
+              strong Position:
+              | #{category.position}
+          .col-md-6    
+            img(src=category.thumbnail alt=category.slug class="img-fluid mb-3" width="350px" height="auto")
+    a(
+      href=`${prefixAdmin}/categories/edit/${category.id}`
+      class="btn btn-warning btn-sm mt-3 w-100 font-weight-bold"
+    ) Fix Category Infomation
+
+
+
+  

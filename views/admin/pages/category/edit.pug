@@ -1,0 +1,65 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main 
+    +alert-success(2000)
+    +alert-error(2000)
+    
+    h1(class="mb-4") EDIT CATEGORY
+
+    form(action=`${prefixAdmin}/categories/edit/${category.id}?_method=PATCH` 
+        method="POST" 
+        enctype="multipart/form-data" 
+        id="productForm" onsubmit="return validateForm()")
+        .form-group
+            label(for="title") Title
+            input#title.form-control(type="text" name="title" value=category.title required)
+        
+        .form-group
+            label(for="description") Description
+            textarea#description.form-control(name="description" rows="3" required)= category.description
+        
+        .form-group
+            label(for="category") Category
+            input#name.form-control(type="text" name="name" value=category.name required)
+
+        .form-group
+            label(for="stock") Stock
+            input#stocks.form-control(type="number" name="stock" min="0" value=category.stock required)
+        
+        .form-group(upload-image)
+            label(for="thumbnail") Thumbnail
+            input#thumbnail.form-control-file(type="file" name="thumbnail" accept="image/*" upload-image-input onchange="previewImage(event)")
+            img.image-preview(src=category.thumbnail upload-image-preview)
+            button.btn.btn-danger(type="button" delete-image-preview) X
+
+        .form-group
+            label(for="status") Status
+            select#status.form-control(name="status" required)
+                option(value="active" selected=category.status === 'active') Active
+                option(value="inactive" selected=category.status === 'inactive') Inactive
+        
+        .form-group
+            label(for="position") Position
+            input#position.form-control(type="number" name="position" min="0" value=category.position required)
+        
+        button.btn.btn-primary(type="submit") Update Category
+
+    script(src="/admin/js/stock.js")
+    script.
+        function validateForm() {
+            // Add custom validation logic if needed
+            return true; // Return true to allow form submission
+        }
+        
+        function previewImage(event) {
+            const imagePreview = document.querySelector('.image-preview');
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }

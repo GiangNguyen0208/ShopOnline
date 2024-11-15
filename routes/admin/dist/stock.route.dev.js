@@ -16,10 +16,8 @@ var upload = multer();
 
 var controller = require("../../controller/admin/stock.controller");
 
-var validate = require("../../validates/admin/stock.validate");
+var validate = require("../../validates/admin/stock.validate"); // Define routes for category management
 
-var _require = require("console"),
-    log = _require.log;
 
 router.get("/", controller.index);
 router.patch("/change-multi", controller.changeMulti);

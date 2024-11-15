@@ -2,6 +2,8 @@
 
 var express = require("express");
 
+var path = require('path');
+
 var bodyParser = require('body-parser');
 
 var flash = require('connect-flash');
@@ -41,7 +43,9 @@ app.use(session({
   }
 }));
 app.use(flash());
-app.use('/uploads', express["static"]('uploads')); // Set up view engine
+app.use('/uploads', express["static"]('uploads')); // New route to the TINYMCE Node Module
+
+app.use('/tinymce', express["static"](path.join(__dirname, 'node_modules', 'tinymce'))); // Set up view engine
 
 app.set("views", "".concat(__dirname, "/views"));
 app.set("view engine", "pug"); // Static files

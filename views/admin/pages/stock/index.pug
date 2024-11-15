@@ -3,9 +3,12 @@ include ../../mixins/filter-status.pug
 include ../../mixins/search.pug
 include ../../mixins/pagination.pug
 include ../../mixins/form-change-multi.pug
+include ../../mixins/alert.pug
 include ../../mixins/sort.pug
 
 block main
+  +alert-success(2000)
+
   h1 Product warehouse
 
   .card.mb-3 

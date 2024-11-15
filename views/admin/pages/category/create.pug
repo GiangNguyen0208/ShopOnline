@@ -1,0 +1,41 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main 
+    +alert-success(2000)
+    +alert-error(2000)
+    
+    h1(class="mb-4") ADD NEW CATEGORY
+
+    form(action=`${prefixAdmin}/categories/create-post` 
+        method="POST" 
+        enctype="multipart/form-data" 
+        id="productForm")
+        .form-group
+            label(for="title") Name
+            input#name.form-control(type="text" name="name")
+        
+        .form-group
+            label(for="description") Description
+            textarea#description.form-control(name="description" rows="3")
+        
+
+        .form-group(upload-image)
+            label(for="thumbnail") Thumbnail
+            input#thumbnail.form-control-file(type="file" name="thumbnail" accept="image/*" required upload-image-input)
+            img.image-preview(src="" upload-image-preview)
+            button.btn.btn-danger(type="button" delete-image-preview style="display: none;") X
+
+        .form-group
+            label(for="status") Status
+            select#status.form-control(name="status")
+                option(value="active") Active
+                option(value="inactive") Inactive
+        
+        .form-group
+            label(for="position") Position
+            input#position.form-control(type="number" name="position" min="0")
+        
+        button.btn.btn-primary(type="submit") New Create
+
+    script(src="/admin/js/stock.js")
